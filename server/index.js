@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import UserModel from "./user.js";
 import express from "express";
 
-import cors from "./cors";
+import cors from "cors";
 
 // -----
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Si PORT no está definido en las variables de entorno, usa el puerto 3000 por defecto
 
 app.use(cors());
 
