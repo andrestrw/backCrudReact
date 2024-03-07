@@ -3,17 +3,20 @@ import UserModel from "./user.js";
 import express from "express";
 
 import cors from "cors";
+import "dotenv/config";
 
 // -----
 const app = express();
-const port = process.env.PORT || 3000; // Si PORT no está definido en las variables de entorno, usa el puerto 3000 por defecto
+const URL_CONNECT = process.env.URL_CONNECT;
+
+const PORT = process.env.PORT; // Si PORT no está definido en las variables de entorno, usa el puerto 3000 por defecto
 
 app.use(cors());
 
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/nodeexpressdb", {})
+  .connect(URL_CONNECT)
 
   .then((db) => console.log("DB is connected"))
   .catch((err) => console.log(err));
@@ -56,6 +59,6 @@ app.delete("/deleteuser/:id", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
 });
