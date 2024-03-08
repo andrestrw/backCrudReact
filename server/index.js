@@ -1,64 +1,51 @@
+import express from "express";
 import mongoose from "mongoose";
 import UserModel from "./user.js";
-import express from "express";
 
-import cors from "cors";
-import "dotenv/config";
-
-// -----
 const app = express();
-const URL_CONNECT = process.env.URL_CONNECT;
+// const URL_CONNECT =
+//   "mongodb+srv://admin23:BKb51Te5uMIl8MCN@cluster1.0hd9hsx.mongodb.net/Cluster1?retryWrites=true&w=majority&appName=Cluster1";
 
-const PORT = process.env.PORT; // Si PORT no está definido en las variables de entorno, usa el puerto 3000 por defecto
-
-app.use(cors());
-
+const URL_CONNECT =
+  "mongodb+srv://admin23:gThGFL73JpwzQbRw@nodeapi.gte64vi.mongodb.net/NodeApi?retryWrites=true&w=majority&appName=NodeApi";
 app.use(express.json());
+
+app.listen(3000, () => {
+  console.log("Server node");
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello from home");
+});
+
+// Agregar producto
+app.post("/product", async (req, res) => {
+  try {
+    const product = await UserModel.create(req.body);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 mongoose
   .connect(URL_CONNECT)
+  .then(() => {
+    console.log("Connect whit mongo ");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+// //GET POST PUT DELETE
+// app.get("/", (req, res) => {
+//   res.send("Hello from home new");
+// });
 
-  .then((db) => console.log("DB is connected"))
-  .catch((err) => console.log(err));
-
-app.get("/", (req, res) => {
-  UserModel.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.json(err));
-});
-
-app.get("/get/:id", (req, res) => {
-  const id = req.params.id;
-  UserModel.findById({ _id: id })
-    .then((post) => res.json(post))
-    .catch((err) => console.log(err));
-});
-
-app.post("/create", (req, res) => {
-  UserModel.create(req.body)
-    .then((user) => res.json(user))
-    .catch((err) => res.json(err));
-});
-app.put("/update/:id", (req, res) => {
-  const id = req.params.id;
-  UserModel.findByIdAndUpdate(
-    { _id: id },
-    {
-      name: req.body.name,
-      email: req.body.email,
-      age: req.body.age,
-    }
-  )
-    .then((user) => res.json(user))
-    .catch((err) => res.json(err));
-});
-app.delete("/deleteuser/:id", (req, res) => {
-  const id = req.params.id;
-  UserModel.findByIdAndDelete({ _id: id })
-    .then((response) => res.json(response))
-    .catch((err) => res.json(err));
-});
-
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
-});
+// mongoose
+//   .connect(URL_CONNECT)
+//   .then(() => {
+//     console.log("connect with mongo");
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
