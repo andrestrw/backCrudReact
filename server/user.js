@@ -11,11 +11,11 @@ const usersSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    quantity: {
-      type: Number,
+    email: {
+      type: String,
       require: true,
     },
-    price: {
+    age: {
       type: Number,
       require: true,
     },

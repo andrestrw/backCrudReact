@@ -8,8 +8,7 @@ import "dotenv/config";
 // -----
 const app = express();
 const URL_CONNECT = process.env.URL_CONNECT;
-
-const PORT = process.env.PORT; // Si PORT no está definido en las variables de entorno, usa el puerto 3000 por defecto
+const PORT = process.env.PORT;
 
 app.use(cors());
 
